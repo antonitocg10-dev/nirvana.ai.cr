@@ -33,10 +33,10 @@
       transition: background 0.4s ease, border-color 0.4s ease;
     }
     nav.solid { background: rgba(6,32,48,0.95); border-bottom-color: rgba(108,174,106,0.18); }
-    .nav-inner { max-width: 1200px; margin: 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo { display: flex; align-items: center; gap: 6px; text-decoration: none; }
-    .nav-logo .logo-icon { height: 52px; width: auto; display: block; }
-    .nav-logo .logo-name { height: 22px; width: auto; display: block; }
+    .nav-inner { max-width: 1200px; margin: 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; overflow: visible; }
+    .nav-logo { display: flex; align-items: center; gap: 0px; text-decoration: none; }
+    .nav-logo .logo-icon { height: 58px; width: auto; display: block; }
+    .nav-logo .logo-name { height: 120px; width: auto; display: block; margin-left: -26px; transform: translateY(10px); }
     .logo-text { display: none; }
     .nav-links { display: flex; align-items: center; gap: 32px; }
     .nav-link { font-size: 0.82rem; font-weight: 500; color: rgba(232,232,232,0.75); text-decoration: none;
@@ -172,9 +172,36 @@
       .pricing-grid { grid-template-columns: 1fr !important; }
       .contact-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
       .hero-stats { gap: 32px !important; }
+      /* Fix hero headline overflow */
+      #hero h1 span { white-space: normal !important; }
+      /* Stack contact form name/email row */
+      .contact-form-row { grid-template-columns: 1fr !important; }
+      /* Fix CTA bar layout */
+      .cta-bar { padding: 28px 24px !important; flex-direction: column !important; text-align: center !important; }
+      .cta-bar .btn { width: 100%; justify-content: center !important; }
+      /* Software grid: collapse to single column */
+      .software-grid { grid-template-columns: 1fr !important; }
+      /* Prevent iOS Safari zoom on focused inputs */
+      .form-field { font-size: 16px !important; }
+      /* Touch optimizations */
+      .btn, a, button { -webkit-tap-highlight-color: transparent; }
+      .btn { touch-action: manipulation; }
     }
     @media(max-width:640px) {
-      .section-wrap { padding: 0 20px; }
+      .section-wrap { padding: 0 16px; }
+      #hero { padding-left: 16px !important; padding-right: 16px !important; }
+    }
+    @media(max-width:480px) {
+      /* Value cards collapse to single column on small phones */
+      .about-value-grid { grid-template-columns: 1fr !important; }
+      /* Tighter hero stats */
+      .hero-stats { gap: 20px !important; justify-content: space-around !important; }
+      /* Reduce section vertical padding */
+      #about, #services, #how-it-works, #pricing, #faq, #contact { padding-top: 72px !important; padding-bottom: 72px !important; }
+      /* Pricing card padding */
+      .pricing-card { padding: 28px 20px !important; }
+      /* FAQ question font size */
+      .faq-q { font-size: 0.9rem !important; }
     }
   </style>
 </head>
@@ -191,7 +218,7 @@
   <div class="nav-inner">
     <a href="#hero" class="nav-logo" aria-label="Nirvana AI Home">
       <img class="logo-icon" src="Brand_Info/Nirvana Logo ONLY.png" alt="Nirvana AI">
-      <img class="logo-name" src="Brand_Info/Nirvana Logo Name.png" alt="Nirvana AI">
+      <img class="logo-name" src="Brand_Info/nirvana.ai.industries.png" alt="Nirvana AI Industries">
     </a>
     <div class="nav-links">
       <a href="#about" class="nav-link">About Us</a>
@@ -300,7 +327,7 @@
       </div>
 
       <!-- Value cards -->
-      <div class="reveal reveal-delay-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="about-value-grid reveal reveal-delay-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
         <div class="card" style="padding:24px;">
           <div class="icon-box" style="margin-bottom:16px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6CAE6A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -436,7 +463,7 @@
     </div>
 
     <!-- Software Grid -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;">
+    <div class="software-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">
       <div class="card reveal" style="padding:26px;display:flex;gap:18px;align-items:flex-start;">
         <div class="icon-box" style="flex-shrink:0;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6CAE6A" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -508,7 +535,7 @@
     </div>
 
     <!-- CTA bar -->
-    <div class="reveal" style="margin-top:72px;padding:40px 48px;background:rgba(108,174,106,0.05);border:1px solid rgba(108,174,106,0.18);border-radius:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+    <div class="cta-bar reveal" style="margin-top:72px;padding:40px 48px;background:rgba(108,174,106,0.05);border:1px solid rgba(108,174,106,0.18);border-radius:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;">
       <div>
         <h3 class="section-title" style="font-size:1.4rem;margin-bottom:8px;">Ready to automate your <span class="accent">workflow?</span></h3>
         <p style="font-size:0.88rem;color:rgba(232,232,232,0.5);">Book a free consultation and see what AI can do for your business.</p>
@@ -765,19 +792,22 @@
       <!-- Right: Form -->
       <div class="reveal reveal-delay-2">
         <form id="contact-form" onsubmit="submitForm(event)" style="display:flex;flex-direction:column;gap:16px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <input type="hidden" name="access_key" value="d52c09d5-2873-46e2-a7e5-2e80638ba801">
+          <input type="hidden" name="subject" value="New Contact Form Submission — Nirvana AI Industries">
+          <input type="hidden" name="from_name" value="Nirvana AI Website">
+          <div class="contact-form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <div>
               <label style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(232,232,232,0.4);display:block;margin-bottom:8px;">Name</label>
-              <input type="text" class="form-field" placeholder="Your name" required>
+              <input type="text" name="name" class="form-field" placeholder="Your name" required>
             </div>
             <div>
               <label style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(232,232,232,0.4);display:block;margin-bottom:8px;">Email</label>
-              <input type="email" class="form-field" placeholder="your@email.com" required>
+              <input type="email" name="email" class="form-field" placeholder="your@email.com" required>
             </div>
           </div>
           <div>
             <label style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(232,232,232,0.4);display:block;margin-bottom:8px;">Service Interest</label>
-            <select class="form-field">
+            <select name="service" class="form-field">
               <option value="" style="background:#062030;">Select a service...</option>
               <option style="background:#062030;">AI Agent Customer Service</option>
               <option style="background:#062030;">AI Agent WhatsApp</option>
@@ -795,7 +825,7 @@
           </div>
           <div>
             <label style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(232,232,232,0.4);display:block;margin-bottom:8px;">Message</label>
-            <textarea class="form-field" rows="5" placeholder="Tell us about your business and what you'd like to automate..." style="resize:vertical;"></textarea>
+            <textarea name="message" class="form-field" rows="5" placeholder="Tell us about your business and what you'd like to automate..." style="resize:vertical;"></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="justify-content:center;margin-top:4px;">
             Send Message →
@@ -1093,17 +1123,42 @@ function toggleFAQ(btn) {
 // ══════════════════════════════════════
 // CONTACT FORM
 // ══════════════════════════════════════
-function submitForm(e) {
+async function submitForm(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('button[type="submit"]');
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const successMsg = document.getElementById('form-success');
+
   btn.textContent = 'Sending...';
   btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = 'Message Sent ✓';
-    btn.style.background = 'rgba(108,174,106,0.3)';
-    document.getElementById('form-success').style.display = 'block';
-    e.target.reset();
-  }, 1200);
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(form)))
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      btn.textContent = 'Message Sent ✓';
+      btn.style.background = 'rgba(108,174,106,0.3)';
+      successMsg.style.display = 'block';
+      form.reset();
+    } else {
+      btn.textContent = 'Send Message →';
+      btn.disabled = false;
+      successMsg.textContent = '✗ Something went wrong. Please try again.';
+      successMsg.style.color = '#e07070';
+      successMsg.style.display = 'block';
+    }
+  } catch (err) {
+    btn.textContent = 'Send Message →';
+    btn.disabled = false;
+    successMsg.textContent = '✗ Network error. Please try again.';
+    successMsg.style.color = '#e07070';
+    successMsg.style.display = 'block';
+  }
 }
 </script>
 </body>

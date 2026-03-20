@@ -22,6 +22,17 @@
 
     #aurora-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.48; }
     #mouse-canvas  { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    /* Mobile: static aurora gradient instead of 241-frame canvas (prevents iOS memory crash) */
+    @media (max-width: 768px) {
+      #aurora-canvas, #mouse-canvas { display: none; }
+      body::before {
+        content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background:
+          radial-gradient(ellipse 80% 60% at 20% 40%, rgba(30,120,80,0.28) 0%, transparent 70%),
+          radial-gradient(ellipse 60% 80% at 80% 70%, rgba(20,90,60,0.22) 0%, transparent 65%),
+          radial-gradient(ellipse 100% 50% at 50% 20%, rgba(10,60,40,0.18) 0%, transparent 60%);
+      }
+    }
     .noise { position: fixed; inset: 0; pointer-events: none; z-index: 2; opacity: 0.03;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
@@ -958,22 +969,27 @@ async function loadFrame(i) {
   } catch (_) {}
 }
 
-// Phase 1: first 16 frames in parallel → immediate first paint
-Promise.all(Array.from({ length: 16 }, (_, i) => loadFrame(i))).then(() => {
-  resizeCanvas();
-  drawFrame(0);
+// Skip all frame loading on mobile — prevents iOS Safari memory crash
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
 
-  // Phase 2: load the rest in small parallel batches (avoids network congestion)
-  (async function loadRest() {
-    const BATCH = 20;
-    for (let i = 16; i < FRAME_COUNT; i += BATCH) {
-      await Promise.all(
-        Array.from({ length: Math.min(BATCH, FRAME_COUNT - i) }, (_, j) => loadFrame(i + j))
-      );
-    }
-    initScrollScrub();
-  })();
-});
+if (!isMobile) {
+  // Phase 1: first 16 frames in parallel → immediate first paint
+  Promise.all(Array.from({ length: 16 }, (_, i) => loadFrame(i))).then(() => {
+    resizeCanvas();
+    drawFrame(0);
+
+    // Phase 2: load the rest in small parallel batches (avoids network congestion)
+    (async function loadRest() {
+      const BATCH = 20;
+      for (let i = 16; i < FRAME_COUNT; i += BATCH) {
+        await Promise.all(
+          Array.from({ length: Math.min(BATCH, FRAME_COUNT - i) }, (_, j) => loadFrame(i + j))
+        );
+      }
+      initScrollScrub();
+    })();
+  });
+}
 
 // ── GSAP ScrollTrigger — direct draw, no nested RAF ──
 function initScrollScrub() {
@@ -1069,7 +1085,7 @@ function animateMouse() {
 
   requestAnimationFrame(animateMouse);
 }
-animateMouse();
+if (!isMobile) animateMouse();
 
 // ══════════════════════════════════════
 // NAV SCROLL

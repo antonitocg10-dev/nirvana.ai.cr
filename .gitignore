@@ -1,0 +1,12 @@
+# Large source video files (not used by the site)
+*.mp4
+
+# Dev tooling
+serve.mjs
+screenshot.mjs
+screenshot-mobile.mjs
+temporary screenshots/
+Design/
+
+# Claude internal
+CLAUDE.md
